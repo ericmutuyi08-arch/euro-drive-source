@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import type { LocalCartItem } from '@/lib/types';
 
 const CART_KEY = 'engine-cart';
@@ -12,14 +12,21 @@ function getStoredCart(): LocalCartItem[] {
 
 export function useCart() {
   const [items, setItems] = useState<LocalCartItem[]>(getStoredCart);
+  const isInternalUpdate = useRef(false);
 
   useEffect(() => {
     localStorage.setItem(CART_KEY, JSON.stringify(items));
+    isInternalUpdate.current = true;
     window.dispatchEvent(new Event('cart-updated'));
+    isInternalUpdate.current = false;
   }, [items]);
 
   useEffect(() => {
-    const handler = () => setItems(getStoredCart());
+    const handler = () => {
+      if (!isInternalUpdate.current) {
+        setItems(getStoredCart());
+      }
+    };
     window.addEventListener('cart-updated', handler);
     return () => window.removeEventListener('cart-updated', handler);
   }, []);

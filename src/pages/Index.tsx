@@ -1,7 +1,6 @@
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import ProductGrid from '@/components/products/ProductGrid';
-import ProductSort from '@/components/products/ProductSort';
 import { useProducts } from '@/hooks/useProducts';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -23,11 +22,6 @@ const Index = () => {
 
   const updateFilters = (newFilters: Partial<FiltersType>) => {
     const params = new URLSearchParams(searchParams);
-    if (newFilters.sort && newFilters.sort !== 'newest') {
-      params.set('sort', newFilters.sort);
-    } else {
-      params.delete('sort');
-    }
     if (newFilters.page && newFilters.page > 1) {
       params.set('page', String(newFilters.page));
     } else {
@@ -41,36 +35,12 @@ const Index = () => {
 
   return (
     <Layout>
-      {/* Breadcrumb + Sort bar */}
-      <div className="bg-background">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div className="flex items-center gap-2 text-sm uppercase">
-              <Link to="/" className="text-muted-foreground hover:text-primary font-medium">Home</Link>
-              <span className="text-muted-foreground">/</span>
-              <Link to="/products?category=engines" className="text-muted-foreground hover:text-primary font-medium">Engines</Link>
-              <span className="text-muted-foreground">/</span>
-              <span className="text-foreground font-bold">Diesel Occasion</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <ProductSort
-                value={filters.sort || 'newest'}
-                onChange={v => updateFilters({ sort: v as FiltersType['sort'], page: 1 })}
-                total={data?.total || 0}
-                page={currentPage}
-                perPage={ITEMS_PER_PAGE}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      <div className="bg-background min-h-screen">
+        <div className="container mx-auto px-4 py-8">
+          <h2 className="text-2xl font-normal text-foreground mb-6">Our latest news</h2>
 
-      {/* Product Grid */}
-      <div className="bg-background">
-        <div className="container mx-auto px-4 pb-12">
           <ProductGrid products={data?.products || []} loading={isLoading} />
 
-          {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex items-center justify-center gap-2 mt-8">
               <Button
