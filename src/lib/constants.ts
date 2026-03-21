@@ -3,8 +3,9 @@ export const NAV_CATEGORIES = [
   { name: 'ENGINE PARTS', slug: 'engine-parts' },
   { name: 'GEARBOXES', slug: 'gearboxes' },
   { name: 'TURBO PARTS', slug: 'turbo-parts' },
-  { name: 'TURBO KITS', slug: 'turbo-kits' },
-  { name: 'INJECTORS', slug: 'injectors' },
+  { name: 'TURBO REHABILITATION KITS', slug: 'turbo-kits' },
+  { name: 'CARTOUCHES CHRA', slug: 'cartouches-chra' },
+  { name: 'COMPRESSORS', slug: 'compressors' },
   { name: 'ELECTRIC MOTORS', slug: 'electric-motors' },
 ] as const;
 
