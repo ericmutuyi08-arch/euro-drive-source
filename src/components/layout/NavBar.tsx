@@ -1,18 +1,17 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
-import { NAV_CATEGORIES } from '@/lib/constants';
-import { BRANDS } from '@/lib/constants';
+import { NAV_CATEGORIES, BRANDS } from '@/lib/constants';
 
 const NavBar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
   return (
-    <nav className="bg-secondary sticky top-0 z-50 shadow-lg">
+    <nav className="bg-primary sticky top-0 z-50">
       <div className="container mx-auto px-4">
         {/* Desktop Nav */}
-        <div className="hidden lg:flex items-center justify-center">
+        <div className="hidden lg:flex items-center justify-start gap-0">
           {NAV_CATEGORIES.map(cat => (
             <div
               key={cat.slug}
@@ -22,7 +21,7 @@ const NavBar = () => {
             >
               <Link
                 to={`/products?category=${cat.slug}`}
-                className="flex items-center gap-1 px-4 py-3 text-xs font-bold tracking-wider text-secondary-foreground hover:text-primary transition-colors uppercase"
+                className="flex items-center gap-1 px-3 py-3 text-[11px] font-bold tracking-wider text-primary-foreground hover:bg-primary-foreground/10 transition-colors uppercase whitespace-nowrap"
               >
                 {cat.name}
                 <ChevronDown className="h-3 w-3" />
@@ -56,8 +55,8 @@ const NavBar = () => {
 
         {/* Mobile toggle */}
         <div className="lg:hidden flex items-center justify-between py-3">
-          <span className="text-secondary-foreground font-bold text-sm uppercase">Menu</span>
-          <button onClick={() => setMobileOpen(!mobileOpen)} className="text-secondary-foreground">
+          <span className="text-primary-foreground font-bold text-sm uppercase">Menu</span>
+          <button onClick={() => setMobileOpen(!mobileOpen)} className="text-primary-foreground">
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
@@ -70,7 +69,7 @@ const NavBar = () => {
                 key={cat.slug}
                 to={`/products?category=${cat.slug}`}
                 onClick={() => setMobileOpen(false)}
-                className="block px-4 py-2 text-sm text-secondary-foreground hover:text-primary transition-colors"
+                className="block px-4 py-2 text-sm text-primary-foreground hover:bg-primary-foreground/10 transition-colors"
               >
                 {cat.name}
               </Link>
