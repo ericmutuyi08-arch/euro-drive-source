@@ -82,14 +82,17 @@ const AdminDashboard = () => {
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold uppercase h-20">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <Button asChild size="lg" className="h-20 bg-primary font-bold uppercase text-primary-foreground hover:bg-primary/90">
             <Link to="/admin/products"><Package className="mr-2 h-5 w-5" /> Manage Products</Link>
           </Button>
-          <Button asChild size="lg" variant="outline" className="font-bold uppercase h-20">
+          <Button asChild size="lg" variant="outline" className="h-20 font-bold uppercase">
+            <Link to="/admin/categories"><FolderTree className="mr-2 h-5 w-5" /> Manage Categories</Link>
+          </Button>
+          <Button asChild size="lg" variant="outline" className="h-20 font-bold uppercase">
             <Link to="/admin/orders"><ShoppingCart className="mr-2 h-5 w-5" /> Manage Orders</Link>
           </Button>
-          <Button asChild size="lg" variant="outline" className="font-bold uppercase h-20">
+          <Button asChild size="lg" variant="outline" className="h-20 font-bold uppercase">
             <Link to="/admin/quotes"><FileText className="mr-2 h-5 w-5" /> Manage Quotes</Link>
           </Button>
         </div>
