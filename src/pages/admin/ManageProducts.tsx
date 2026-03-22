@@ -14,6 +14,29 @@ import { useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, Plus, Pencil, Trash2 } from 'lucide-react';
 import { BRANDS, FUEL_TYPES } from '@/lib/constants';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import ImageUpload from '@/components/admin/ImageUpload';
+
+interface ProductForm {
+  name: string;
+  description: string;
+  brand: string;
+  fuel_type: string;
+  engine_code: string;
+  price: string;
+  mileage: string;
+  year: string;
+  condition: string;
+  compatibility: string;
+  images: string[];
+  category_id: string;
+  availability: boolean;
+}
+
+const emptyForm: ProductForm = {
+  name: '', description: '', brand: 'Renault', fuel_type: 'Diesel', engine_code: '',
+  price: '', mileage: '', year: '', condition: 'Tested - OK',
+  compatibility: '', images: [], category_id: '', availability: true,
+};
 
 const ManageProducts = () => {
   const { user, isAdmin, loading: authLoading } = useAuth();
@@ -24,13 +47,7 @@ const ManageProducts = () => {
   const { data: categories } = useCategories();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
-
-  const emptyForm = {
-    name: '', description: '', brand: 'Renault', fuel_type: 'Diesel', engine_code: '',
-    price: '', mileage: '', year: '', condition: 'Tested - OK',
-    compatibility: '', images: '', category_id: '', availability: true,
-  };
-  const [form, setForm] = useState(emptyForm);
+  const [form, setForm] = useState<ProductForm>(emptyForm);
 
   useEffect(() => {
     if (!authLoading && (!user || !isAdmin)) navigate('/');
@@ -45,25 +62,43 @@ const ManageProducts = () => {
   const openEdit = (product: any) => {
     setEditingId(product.id);
     setForm({
-      name: product.name, description: product.description || '', brand: product.brand,
-      fuel_type: product.fuel_type, engine_code: product.engine_code,
-      price: String(product.price), mileage: product.mileage ? String(product.mileage) : '',
-      year: product.year ? String(product.year) : '', condition: product.condition || '',
-      compatibility: product.compatibility?.join(', ') || '', images: product.images?.join(', ') || '',
-      category_id: product.category_id || '', availability: product.availability,
+      name: product.name,
+      description: product.description || '',
+      brand: product.brand,
+      fuel_type: product.fuel_type,
+      engine_code: product.engine_code,
+      price: String(product.price),
+      mileage: product.mileage ? String(product.mileage) : '',
+      year: product.year ? String(product.year) : '',
+      condition: product.condition || '',
+      compatibility: product.compatibility?.join(', ') || '',
+      images: product.images || [],
+      category_id: product.category_id || '',
+      availability: product.availability,
     });
     setDialogOpen(true);
   };
 
   const handleSave = async () => {
+    if (!form.name || !form.engine_code || !form.price) {
+      toast({ title: 'Missing fields', description: 'Name, engine code & price are required.', variant: 'destructive' });
+      return;
+    }
+
     const payload = {
-      name: form.name, description: form.description, brand: form.brand,
-      fuel_type: form.fuel_type, engine_code: form.engine_code,
-      price: Number(form.price), mileage: form.mileage ? Number(form.mileage) : null,
-      year: form.year ? Number(form.year) : null, condition: form.condition,
+      name: form.name,
+      description: form.description,
+      brand: form.brand,
+      fuel_type: form.fuel_type,
+      engine_code: form.engine_code,
+      price: Number(form.price),
+      mileage: form.mileage ? Number(form.mileage) : null,
+      year: form.year ? Number(form.year) : null,
+      condition: form.condition,
       compatibility: form.compatibility.split(',').map(s => s.trim()).filter(Boolean),
-      images: form.images.split(',').map(s => s.trim()).filter(Boolean),
-      category_id: form.category_id || null, availability: form.availability,
+      images: form.images,
+      category_id: form.category_id || null,
+      availability: form.availability,
     };
 
     let error;
@@ -116,8 +151,8 @@ const ManageProducts = () => {
               </DialogHeader>
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
-                  <div><Label>Name</Label><Input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} /></div>
-                  <div><Label>Engine Code</Label><Input value={form.engine_code} onChange={e => setForm({ ...form, engine_code: e.target.value })} /></div>
+                  <div><Label>Name *</Label><Input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} /></div>
+                  <div><Label>Engine Code *</Label><Input value={form.engine_code} onChange={e => setForm({ ...form, engine_code: e.target.value })} /></div>
                 </div>
                 <div><Label>Description</Label><Textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} rows={3} /></div>
                 <div className="grid grid-cols-3 gap-4">
@@ -144,13 +179,18 @@ const ManageProducts = () => {
                   </div>
                 </div>
                 <div className="grid grid-cols-4 gap-4">
-                  <div><Label>Price (€)</Label><Input type="number" value={form.price} onChange={e => setForm({ ...form, price: e.target.value })} /></div>
+                  <div><Label>Price (€) *</Label><Input type="number" value={form.price} onChange={e => setForm({ ...form, price: e.target.value })} /></div>
                   <div><Label>Mileage (km)</Label><Input type="number" value={form.mileage} onChange={e => setForm({ ...form, mileage: e.target.value })} /></div>
                   <div><Label>Year</Label><Input type="number" value={form.year} onChange={e => setForm({ ...form, year: e.target.value })} /></div>
                   <div><Label>Condition</Label><Input value={form.condition} onChange={e => setForm({ ...form, condition: e.target.value })} /></div>
                 </div>
                 <div><Label>Compatibility (comma-separated)</Label><Input value={form.compatibility} onChange={e => setForm({ ...form, compatibility: e.target.value })} placeholder="Renault Clio, Renault Megane" /></div>
-                <div><Label>Image URLs (comma-separated)</Label><Textarea value={form.images} onChange={e => setForm({ ...form, images: e.target.value })} rows={2} /></div>
+                
+                <div>
+                  <Label>Product Images</Label>
+                  <ImageUpload images={form.images} onImagesChange={(imgs) => setForm({ ...form, images: imgs })} />
+                </div>
+
                 <Button onClick={handleSave} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold">
                   {editingId ? 'Update Product' : 'Add Product'}
                 </Button>
@@ -159,7 +199,6 @@ const ManageProducts = () => {
           </Dialog>
         </div>
 
-        {/* Products table */}
         <div className="bg-card border border-border rounded-lg overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
