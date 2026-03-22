@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Package, FileText, ShoppingCart, ArrowLeft } from 'lucide-react';
+import { Package, FileText, ShoppingCart, ArrowLeft, FolderTree } from 'lucide-react';
 
 const AdminDashboard = () => {
   const { user, isAdmin, loading } = useAuth();
