@@ -14,6 +14,7 @@ import Contact from "./pages/Contact";
 import Account from "./pages/Account";
 import AdminDashboard from "./pages/admin/Dashboard";
 import ManageProducts from "./pages/admin/ManageProducts";
+import ManageCategories from "./pages/admin/ManageCategories";
 import ManageOrders from "./pages/admin/ManageOrders";
 import ManageQuotes from "./pages/admin/ManageQuotes";
 import NotFound from "./pages/NotFound";
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/account" element={<Account />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/products" element={<ManageProducts />} />
+          <Route path="/admin/categories" element={<ManageCategories />} />
           <Route path="/admin/orders" element={<ManageOrders />} />
           <Route path="/admin/quotes" element={<ManageQuotes />} />
           <Route path="*" element={<NotFound />} />

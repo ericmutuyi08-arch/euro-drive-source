@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -19,13 +20,22 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     const { error } = await signIn(email, password);
-    setLoading(false);
+
     if (error) {
+      setLoading(false);
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
-    } else {
-      toast({ title: 'Welcome back!' });
-      navigate('/');
+      return;
     }
+
+    const { data: sessionData } = await supabase.auth.getSession();
+    const userId = sessionData.session?.user?.id;
+    const { data: isAdmin } = userId
+      ? await supabase.rpc('has_role', { _user_id: userId, _role: 'admin' })
+      : { data: false };
+
+    setLoading(false);
+    toast({ title: 'Welcome back!' });
+    navigate(isAdmin ? '/admin' : '/');
   };
 
   return (
