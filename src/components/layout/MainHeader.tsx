@@ -128,7 +128,7 @@ const MainHeader = () => {
 
         {/* Mobile */}
         <div className="md:hidden flex items-center justify-between">
-          <button className="p-2 text-foreground">
+          <button className="p-2 text-foreground" onClick={() => setMobileMenuOpen(true)}>
             <Menu className="h-6 w-6" />
           </button>
           <Link to="/" className="flex items-center gap-2">
@@ -164,6 +164,86 @@ const MainHeader = () => {
             </span>
           </Link>
         </div>
+
+        {/* Mobile Menu Sheet */}
+        <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+          <SheetContent side="left" className="w-[300px] p-0 bg-card">
+            <SheetHeader className="p-4 border-b border-border">
+              <SheetTitle className="text-left text-primary font-black uppercase" style={{ fontFamily: "'Georgia', serif" }}>
+                Menu
+              </SheetTitle>
+            </SheetHeader>
+
+            {/* Mobile Search */}
+            <div className="p-4 border-b border-border">
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                if (mobileSearchQuery.trim()) {
+                  navigate(`/products?search=${encodeURIComponent(mobileSearchQuery.trim())}`);
+                  setMobileMenuOpen(false);
+                }
+              }} className="flex">
+                <Input
+                  type="text"
+                  placeholder="Rechercher..."
+                  value={mobileSearchQuery}
+                  onChange={e => setMobileSearchQuery(e.target.value)}
+                  className="rounded-none border-border bg-background h-9 text-sm flex-1"
+                />
+                <button type="submit" className="h-9 w-10 flex items-center justify-center bg-primary text-primary-foreground shrink-0">
+                  <Search className="h-4 w-4" />
+                </button>
+              </form>
+            </div>
+
+            {/* Categories */}
+            <div className="overflow-y-auto max-h-[calc(100vh-200px)]">
+              {topCategories.map(cat => (
+                <div key={cat.id} className="border-b border-border">
+                  <button
+                    onClick={() => setExpandedCategory(expandedCategory === cat.id ? null : cat.id)}
+                    className="w-full flex items-center justify-between px-4 py-3 text-sm font-bold uppercase tracking-wider text-foreground hover:bg-muted transition-colors"
+                  >
+                    {cat.name}
+                    <ChevronRight className={`h-4 w-4 transition-transform ${expandedCategory === cat.id ? 'rotate-90' : ''}`} />
+                  </button>
+                  {expandedCategory === cat.id && (
+                    <div className="bg-muted/50">
+                      {getBrandsForCategory(cat.id).map(brand => (
+                        <Link
+                          key={brand.id}
+                          to={`/products?category=${cat.slug}&brand=${brand.name}`}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="block px-6 py-2.5 text-sm text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+                        >
+                          {brand.name}
+                        </Link>
+                      ))}
+                      <Link
+                        to={`/products?category=${cat.slug}`}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block px-6 py-2.5 text-sm font-semibold text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+                      >
+                        Voir tout →
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {/* Extra Links */}
+              <Link to="/products" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-sm font-bold uppercase tracking-wider text-foreground hover:bg-muted border-b border-border">
+                Tous les produits
+              </Link>
+              <Link to="/contact" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-sm font-bold uppercase tracking-wider text-foreground hover:bg-muted border-b border-border">
+                Contact / Devis
+              </Link>
+              <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-sm font-bold uppercase tracking-wider text-foreground hover:bg-muted border-b border-border">
+                Mon Compte
+              </Link>
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
     </div>
   );
