@@ -6,6 +6,7 @@ import { useCart } from '@/hooks/useCart';
 import { useCategories } from '@/hooks/useProducts';
 import { useBrands, useCategoryBrands } from '@/hooks/useBrands';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import logoHeader from '@/assets/logo-header.jpg';
 
 const MainHeader = () => {
   const [searchQuery, setSearchQuery] = useState('');
