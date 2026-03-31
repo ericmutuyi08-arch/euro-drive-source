@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingCart, Menu } from 'lucide-react';
+import { Search, ShoppingCart, Menu, ChevronRight, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useCart } from '@/hooks/useCart';
+import { useCategories } from '@/hooks/useProducts';
+import { useBrands, useCategoryBrands } from '@/hooks/useBrands';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 
 const MainHeader = () => {
   const [searchQuery, setSearchQuery] = useState('');
