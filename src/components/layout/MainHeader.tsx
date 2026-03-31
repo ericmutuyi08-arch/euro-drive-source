@@ -9,8 +9,23 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sh
 
 const MainHeader = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileSearchQuery, setMobileSearchQuery] = useState('');
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const navigate = useNavigate();
   const { totalItems } = useCart();
+  const { data: categories } = useCategories();
+  const { data: brands } = useBrands();
+  const { data: categoryBrands } = useCategoryBrands();
+
+  const topCategories = (categories || []).filter(c => !c.parent_id);
+
+  const getBrandsForCategory = (categoryId: string) => {
+    if (!categoryBrands || !brands) return [];
+    const brandIds = categoryBrands.filter(cb => cb.category_id === categoryId).map(cb => cb.brand_id);
+    if (brandIds.length === 0) return brands;
+    return brands.filter(b => brandIds.includes(b.id));
+  };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
