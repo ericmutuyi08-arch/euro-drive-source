@@ -3,7 +3,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { BRANDS, FUEL_TYPES } from '@/lib/constants';
+import { useDistinctBrands, useDistinctFuelTypes } from '@/hooks/useBrands';
 import type { ProductFilters as FiltersType } from '@/lib/types';
 import { Filter, X } from 'lucide-react';
 
@@ -15,6 +15,8 @@ interface ProductFiltersProps {
 const ProductFilters = ({ filters, onFiltersChange }: ProductFiltersProps) => {
   const [priceRange, setPriceRange] = useState([filters.price_min || 0, filters.price_max || 5000]);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { data: brands = [] } = useDistinctBrands();
+  const { data: fuelTypes = [] } = useDistinctFuelTypes();
 
   const toggleBrand = (brand: string) => {
     const current = filters.brand || [];
@@ -57,7 +59,7 @@ const ProductFilters = ({ filters, onFiltersChange }: ProductFiltersProps) => {
       <div>
         <h4 className="font-semibold text-xs uppercase tracking-wider text-muted-foreground mb-3">Brand</h4>
         <div className="space-y-2">
-          {BRANDS.map(brand => (
+          {brands.map(brand => (
             <label key={brand} className="flex items-center gap-2 cursor-pointer text-sm">
               <Checkbox
                 checked={filters.brand?.includes(brand) || false}
@@ -73,7 +75,7 @@ const ProductFilters = ({ filters, onFiltersChange }: ProductFiltersProps) => {
       <div>
         <h4 className="font-semibold text-xs uppercase tracking-wider text-muted-foreground mb-3">Fuel Type</h4>
         <div className="space-y-2">
-          {FUEL_TYPES.map(fuel => (
+          {fuelTypes.map(fuel => (
             <label key={fuel} className="flex items-center gap-2 cursor-pointer text-sm">
               <Checkbox
                 checked={filters.fuel_type?.includes(fuel) || false}
