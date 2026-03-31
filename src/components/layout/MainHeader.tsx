@@ -58,31 +58,8 @@ const MainHeader = () => {
           </form>
 
           {/* Logo - center */}
-          <Link to="/" className="flex items-center gap-3 shrink-0">
-            <svg width="52" height="52" viewBox="0 0 52 52" className="text-primary">
-              <circle cx="26" cy="26" r="11" stroke="currentColor" strokeWidth="2.5" fill="none"/>
-              <circle cx="26" cy="26" r="4.5" fill="currentColor"/>
-              {[0, 45, 90, 135, 180, 225, 270, 315].map(angle => (
-                <rect
-                  key={angle}
-                  x="24"
-                  y="8"
-                  width="4"
-                  height="7"
-                  rx="1"
-                  fill="currentColor"
-                  transform={`rotate(${angle} 26 26)`}
-                />
-              ))}
-            </svg>
-            <div>
-              <h1 className="text-2xl font-black uppercase leading-tight text-primary" style={{ fontFamily: "'Georgia', serif" }}>
-                MON MOTEUR
-              </h1>
-              <p className="text-2xl font-black uppercase leading-tight text-primary" style={{ fontFamily: "'Georgia', serif" }}>
-                D'OCCASION
-              </p>
-            </div>
+          <Link to="/" className="shrink-0">
+            <img src={logoHeader} alt="My Used Engine" className="h-14 w-auto object-contain" />
           </Link>
 
           {/* Right side */}
