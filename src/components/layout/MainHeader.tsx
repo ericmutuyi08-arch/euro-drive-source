@@ -59,7 +59,7 @@ const MainHeader = () => {
 
           {/* Logo - center */}
           <Link to="/" className="shrink-0">
-            <img src={logoHeader} alt="My Used Engine" className="h-14 w-auto object-contain" />
+            <img src={logoHeader} alt="My Used Engine" className="h-20 w-auto object-contain" />
           </Link>
 
           {/* Right side */}
