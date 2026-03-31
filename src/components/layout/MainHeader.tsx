@@ -109,31 +109,8 @@ const MainHeader = () => {
           <button className="p-2 text-foreground" onClick={() => setMobileMenuOpen(true)}>
             <Menu className="h-6 w-6" />
           </button>
-          <Link to="/" className="flex items-center gap-2">
-            <svg width="36" height="36" viewBox="0 0 48 48" className="text-primary">
-              <circle cx="24" cy="24" r="11" stroke="currentColor" strokeWidth="2.5" fill="none"/>
-              <circle cx="24" cy="24" r="4.5" fill="currentColor"/>
-              {[0, 45, 90, 135, 180, 225, 270, 315].map(angle => (
-                <rect
-                  key={angle}
-                  x="24"
-                  y="8"
-                  width="4"
-                  height="7"
-                  rx="1"
-                  fill="currentColor"
-                  transform={`rotate(${angle} 26 26)`}
-                />
-              ))}
-            </svg>
-            <div>
-              <h1 className="text-sm font-black uppercase leading-tight text-primary" style={{ fontFamily: "'Georgia', serif" }}>
-                MON MOTEUR
-              </h1>
-              <p className="text-xs font-black uppercase leading-tight text-primary" style={{ fontFamily: "'Georgia', serif" }}>
-                D'OCCASION
-              </p>
-            </div>
+          <Link to="/" className="flex items-center">
+            <img src={logoHeader} alt="My Used Engine" className="h-10 w-auto object-contain" />
           </Link>
           <Link to="/cart" className="relative p-2">
             <ShoppingCart className="h-5 w-5 text-primary" />
