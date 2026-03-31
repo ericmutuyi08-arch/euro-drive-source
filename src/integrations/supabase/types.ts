@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      brands: {
+        Row: {
+          created_at: string | null
+          id: string
+          image_url: string | null
+          name: string
+          slug: string
+          sort_order: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          slug: string
+          sort_order?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          slug?: string
+          sort_order?: number | null
+        }
+        Relationships: []
+      }
       cart_items: {
         Row: {
           created_at: string | null
@@ -78,6 +105,42 @@ export type Database = {
           {
             foreignKeyName: "categories_parent_id_fkey"
             columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      category_brands: {
+        Row: {
+          brand_id: string
+          category_id: string
+          created_at: string | null
+          id: string
+        }
+        Insert: {
+          brand_id: string
+          category_id: string
+          created_at?: string | null
+          id?: string
+        }
+        Update: {
+          brand_id?: string
+          category_id?: string
+          created_at?: string | null
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "category_brands_brand_id_fkey"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "brands"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "category_brands_category_id_fkey"
+            columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "categories"
             referencedColumns: ["id"]
@@ -166,8 +229,10 @@ export type Database = {
           mileage: number | null
           name: string
           price: number
+          slug: string | null
           updated_at: string | null
           year: number | null
+          youtube_url: string | null
         }
         Insert: {
           availability?: boolean | null
@@ -184,8 +249,10 @@ export type Database = {
           mileage?: number | null
           name: string
           price: number
+          slug?: string | null
           updated_at?: string | null
           year?: number | null
+          youtube_url?: string | null
         }
         Update: {
           availability?: boolean | null
@@ -202,8 +269,10 @@ export type Database = {
           mileage?: number | null
           name?: string
           price?: number
+          slug?: string | null
           updated_at?: string | null
           year?: number | null
+          youtube_url?: string | null
         }
         Relationships: [
           {
@@ -286,6 +355,47 @@ export type Database = {
           },
         ]
       }
+      reviews: {
+        Row: {
+          author: string
+          created_at: string | null
+          id: string
+          is_approved: boolean | null
+          location: string | null
+          product_id: string
+          quote: string
+          rating: number
+        }
+        Insert: {
+          author: string
+          created_at?: string | null
+          id?: string
+          is_approved?: boolean | null
+          location?: string | null
+          product_id: string
+          quote: string
+          rating: number
+        }
+        Update: {
+          author?: string
+          created_at?: string | null
+          id?: string
+          is_approved?: boolean | null
+          location?: string | null
+          product_id?: string
+          quote?: string
+          rating?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           id: string
@@ -345,6 +455,9 @@ export type Database = {
         }
         Returns: boolean
       }
+      show_limit: { Args: never; Returns: number }
+      show_trgm: { Args: { "": string }; Returns: string[] }
+      slugify: { Args: { text: string }; Returns: string }
     }
     Enums: {
       app_role: "admin" | "user"
