@@ -40,6 +40,8 @@ export function useProducts(filters: ProductFilters = {}) {
         case 'name': query = query.order('name', { ascending: true }); break;
         default: query = query.order('created_at', { ascending: false });
       }
+      // Always add secondary sort by id for deterministic pagination
+      query = query.order('id', { ascending: true });
 
       const page = filters.page || 1;
       const perPage = filters.per_page || ITEMS_PER_PAGE;
