@@ -100,17 +100,25 @@ const Products = () => {
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
-                  <Button
-                    key={p}
-                    variant={p === currentPage ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => updateFilters({ ...filters, page: p })}
-                    className={p === currentPage ? 'bg-primary text-primary-foreground' : ''}
-                  >
-                    {p}
-                  </Button>
-                ))}
+                {(() => {
+                  const pages: number[] = [];
+                  const maxVisible = 5;
+                  let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+                  let end = Math.min(totalPages, start + maxVisible - 1);
+                  if (end - start + 1 < maxVisible) start = Math.max(1, end - maxVisible + 1);
+                  for (let i = start; i <= end; i++) pages.push(i);
+                  return pages.map(p => (
+                    <Button
+                      key={p}
+                      variant={p === currentPage ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => updateFilters({ ...filters, page: p })}
+                      className={p === currentPage ? 'bg-primary text-primary-foreground' : ''}
+                    >
+                      {p}
+                    </Button>
+                  ));
+                })()}
                 <Button
                   variant="outline"
                   size="sm"
